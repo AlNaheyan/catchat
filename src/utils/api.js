@@ -26,6 +26,11 @@ export const signIn = async (email, password) => {
     return { user: null, error }
   }
 
+  // Ensure profile exists after sign in
+  if (data.user) {
+    await ensureUserProfile(data.user.id)
+  }
+
   return { user: data.user, error: null }
 }
 
@@ -44,6 +49,12 @@ export const getCurrentUser = async () => {
   const {
     data: { user },
   } = await supabase.auth.getUser()
+
+  // Ensure profile exists when getting current user
+  if (user) {
+    await ensureUserProfile(user.id)
+  }
+
   return user
 }
 
@@ -52,6 +63,51 @@ export const getSession = async () => {
     data: { session },
   } = await supabase.auth.getSession()
   return session
+}
+
+// Ensure user profile exists
+export const ensureUserProfile = async (userId) => {
+  if (!userId) return null
+
+  try {
+    // Check if profile exists
+    const { data, error } = await supabase.from("profiles").select("*").eq("id", userId)
+
+    if (error) throw error
+
+    // If profile doesn't exist, create it
+    if (data.length === 0) {
+      console.log("Profile doesn't exist, creating one...")
+
+      // Get user email
+      const { data: userData } = await supabase.auth.getUser()
+      const email = userData.user?.email || "User"
+
+      const { data: newProfile, error: createError } = await supabase
+        .from("profiles")
+        .insert([
+          {
+            id: userId,
+            username: email,
+            created_at: new Date(),
+            updated_at: new Date(),
+          },
+        ])
+        .select()
+
+      if (createError) {
+        console.error("Error creating profile:", createError)
+        return null
+      }
+
+      return newProfile[0]
+    }
+
+    return data[0]
+  } catch (err) {
+    console.error("Error in ensureUserProfile:", err)
+    return null
+  }
 }
 
 // Posts API
@@ -270,7 +326,12 @@ export const deleteComment = async (id) => {
 
 // Profile API
 export const getUserProfile = async (userId) => {
-  const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).single()
+  // First ensure the profile exists
+  const profile = await ensureUserProfile(userId)
+  if (profile) return profile
+
+  // If ensureUserProfile didn't return a profile, try the original method
+  const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).maybeSingle() // Use maybeSingle instead of single to avoid errors if no profile exists
 
   if (error) {
     console.error("Error fetching profile:", error)
@@ -288,7 +349,17 @@ export const updateUserProfile = async (profileData) => {
     return null
   }
 
-  const { data, error } = await supabase.from("profiles").update(profileData).eq("id", user.id).select()
+  // Ensure profile exists before updating
+  await ensureUserProfile(user.id)
+
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({
+      ...profileData,
+      updated_at: new Date(),
+    })
+    .eq("id", user.id)
+    .select()
 
   if (error) {
     console.error("Error updating profile:", error)

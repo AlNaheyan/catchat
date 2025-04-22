@@ -9,6 +9,7 @@ import { PostPage } from "./pages/Post"
 import { AuthPage } from "./pages/Auth"
 import { Header } from "./components/Header"
 import { AuthGuard } from "./components/AuthGuard"
+import { ProfilePage } from "./pages/Profile"
 import "./app.css"
 
 function App() {
@@ -92,6 +93,19 @@ function App() {
                   <Header onThemeToggle={toggleDarkMode} isDarkMode={isDarkMode} />
                   <main className="pt-6 pb-12 cat-cursor">
                     <EditPostPage />
+                  </main>
+                </>
+              </AuthGuard>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <AuthGuard>
+                <>
+                  <Header onThemeToggle={toggleDarkMode} isDarkMode={isDarkMode} />
+                  <main className="pt-6 pb-12">
+                    <ProfilePage />
                   </main>
                 </>
               </AuthGuard>
