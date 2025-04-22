@@ -92,7 +92,7 @@ export const AuthForm = ({ onSuccess }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full px-4 py-2 bg-[#a67c52] text-white rounded-lg hover:bg-[#8c6142] focus:outline-none focus:ring-2 focus:ring-[#d4b996] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-4 py-2 bg-[#a67c52] text-white rounded-lg hover:bg-[#8c6142] focus:outline-none focus:ring-2 focus:ring-[#d4b996] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
         </button>
@@ -102,7 +102,7 @@ export const AuthForm = ({ onSuccess }) => {
         <button
           type="button"
           onClick={() => setIsSignUp(!isSignUp)}
-          className="text-[#a67c52] dark:text-[#d4b996] hover:underline text-sm"
+          className="text-[#a67c52] dark:text-[#d4b996] hover:underline text-sm cursor-pointer"
         >
           {isSignUp ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
         </button>
