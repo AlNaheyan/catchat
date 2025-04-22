@@ -22,8 +22,10 @@ function App() {
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark")
+      document.body.style.backgroundColor = "#2c241e" // Dark coffee background
     } else {
       document.documentElement.classList.remove("dark")
+      document.body.style.backgroundColor = "#fff9f0" // Light coffee background
     }
     localStorage.setItem("darkMode", isDarkMode)
   }, [isDarkMode])
@@ -33,7 +35,9 @@ function App() {
   }
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? "dark bg-[#2c241e] text-[#e6d7c3]" : "bg-[#fff9f0] text-[#6f4e37]"}`}>
+    <div
+      className={`min-h-screen ${isDarkMode ? "dark bg-coffee-950 text-coffee-200" : "bg-coffee-50 text-coffee-700"}`}
+    >
       <BrowserRouter>
         <Routes>
           <Route path="/auth" element={<AuthPage />} />
@@ -97,8 +101,8 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
-        <footer className="py-6 bg-[#f5f0e8] dark:bg-[#3c3228] border-t border-[#e6d7c3] dark:border-[#4d3f33]">
-          <div className="container mx-auto px-4 text-center text-sm text-[#8c7158] dark:text-[#b39f85]">
+        <footer className="py-6 bg-coffee-100 dark:bg-coffee-800 border-t border-coffee-200 dark:border-coffee-700">
+          <div className="container mx-auto px-4 text-center text-sm text-coffee-500 dark:text-coffee-400">
             &copy; {new Date().getFullYear()} CatChat - Share your purr-fect moments with the world
           </div>
         </footer>

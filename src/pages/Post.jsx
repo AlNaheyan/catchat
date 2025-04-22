@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useNavigate, Link } from "react-router-dom"
-import { PostItem } from "../components/PostItem"
 import { CommentForm } from "../components/CommentForm"
 import { CommentList } from "../components/CommentList"
 import { getPostById, upvotePost, deletePost, getCurrentUser } from "../utils/api"
-import { ArrowLeft, Edit, Trash2 } from "lucide-react"
+import { ArrowLeft, Edit, Trash2, Heart, Clock } from "lucide-react"
+import { formatDistanceToNow } from "date-fns"
 
 export const PostPage = () => {
   const { id } = useParams()
@@ -47,7 +47,7 @@ export const PostPage = () => {
 
     const updatedPost = await upvotePost(post.id, post.upvotes)
     if (updatedPost) {
-      setPost(updatedPost)
+      setPost({ ...post, upvotes: updatedPost.upvotes })
     }
   }
 
@@ -73,7 +73,7 @@ export const PostPage = () => {
     return (
       <div className="container mx-auto px-4 py-8 max-w-3xl">
         <div className="flex justify-center py-10">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-coffee-500"></div>
         </div>
       </div>
     )
@@ -97,48 +97,100 @@ export const PostPage = () => {
   }
 
   const isAuthor = user && post && user.id === post.user_id
+  const formattedDate = post ? formatDistanceToNow(new Date(post.created_at), { addSuffix: true }) : ""
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
+    <div className="container mx-auto px-4 py-8 max-w-2xl">
       <div className="mb-6">
-        <Link to="/" className="flex items-center text-indigo-600 dark:text-indigo-400 hover:underline">
+        <Link to="/" className="flex items-center text-coffee-500 dark:text-coffee-300 hover:underline">
           <ArrowLeft className="w-4 h-4 mr-1" />
           Back to Home
         </Link>
       </div>
 
       {post && (
-        <>
-          <div className="mb-6">
-            <PostItem post={post} showContent={true} onUpvote={handleUpvote} />
+        <div className="bg-coffee-100 dark:bg-coffee-800 rounded-lg shadow-md overflow-hidden border border-coffee-200 dark:border-coffee-700">
+          {/* Post Header */}
+          <div className="p-5 border-b border-coffee-200 dark:border-coffee-700">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center">
+                <div className="w-10 h-10 rounded-full bg-coffee-300 dark:bg-coffee-600 flex items-center justify-center text-coffee-700 dark:text-coffee-200 font-bold text-lg">
+                  {post.author_name ? post.author_name.charAt(0).toUpperCase() : "A"}
+                </div>
+                <div className="ml-3">
+                  <p className="font-medium text-coffee-700 dark:text-coffee-200">{post.author_name}</p>
+                  <div className="flex items-center text-coffee-500 dark:text-coffee-400 text-sm">
+                    <Clock className="w-3 h-3 mr-1" />
+                    <span>{formattedDate}</span>
+                  </div>
+                </div>
+              </div>
 
-            {isAuthor && (
-              <div className="flex gap-2 mt-4 justify-end">
-                <Link
-                  to={`/edit/${post.id}`}
-                  className="flex items-center gap-1 px-3 py-1.5 bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 rounded-md hover:bg-indigo-200 dark:hover:bg-indigo-800"
-                >
-                  <Edit className="w-4 h-4" />
-                  <span>Edit</span>
-                </Link>
-                <button
-                  onClick={handleDelete}
-                  className="flex items-center gap-1 px-3 py-1.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-md hover:bg-red-200 dark:hover:bg-red-900/50"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  <span>Delete</span>
-                </button>
+              {isAuthor && (
+                <div className="flex gap-2">
+                  <Link
+                    to={`/edit/${post.id}`}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-coffee-200 dark:bg-coffee-700 text-coffee-700 dark:text-coffee-300 rounded-md hover:bg-coffee-300 dark:hover:bg-coffee-600"
+                  >
+                    <Edit className="w-4 h-4" />
+                    <span>Edit</span>
+                  </Link>
+                  <button
+                    onClick={handleDelete}
+                    className="flex items-center gap-1 px-3 py-1.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-md hover:bg-red-200 dark:hover:bg-red-900/50"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    <span>Delete</span>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <h1 className="text-2xl font-bold text-coffee-700 dark:text-coffee-200 mb-3">{post.title}</h1>
+
+            {post.content && (
+              <div className="prose dark:prose-invert max-w-none mb-4">
+                <p className="text-coffee-700 dark:text-coffee-300">{post.content}</p>
               </div>
             )}
+
+            {post.image_url && (
+              <div className="mt-4 mb-2">
+                <img
+                  src={post.image_url || "/placeholder.svg"}
+                  alt={post.title}
+                  className="w-full h-auto rounded-lg object-cover max-h-96"
+                  onError={(e) => {
+                    e.target.onerror = null
+                    e.target.src = "https://via.placeholder.com/800x400?text=No+Cat+Image+Available"
+                  }}
+                />
+              </div>
+            )}
+
+            <div className="flex items-center justify-between mt-4">
+              <button
+                onClick={handleUpvote}
+                className="flex items-center gap-1 px-3 py-1 bg-coffee-200 dark:bg-coffee-700 hover:bg-coffee-300 dark:hover:bg-coffee-600 rounded-full transition-colors duration-200"
+              >
+                <Heart className="w-4 h-4 text-coffee-600 dark:text-coffee-400" />
+                <span className="text-sm font-medium text-coffee-700 dark:text-coffee-300">{post.upvotes} likes</span>
+              </button>
+            </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden p-6 mb-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Comments</h2>
+          {/* Comment Form */}
+          <div className="p-5 border-b border-coffee-200 dark:border-coffee-700">
+            <h2 className="text-lg font-medium text-coffee-700 dark:text-coffee-200 mb-3">Leave a comment</h2>
             <CommentForm postId={post.id} onCommentAdded={handleCommentAdded} />
           </div>
 
-          <CommentList postId={post.id} newComment={newComment} />
-        </>
+          {/* Comments List */}
+          <div className="p-5">
+            <h2 className="text-lg font-medium text-coffee-700 dark:text-coffee-200 mb-4">Comments</h2>
+            <CommentList postId={post.id} newComment={newComment} />
+          </div>
+        </div>
       )}
     </div>
   )

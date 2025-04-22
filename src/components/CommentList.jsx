@@ -31,21 +31,21 @@ export const CommentList = ({ postId, newComment }) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center py-6">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+      <div className="flex justify-center py-4">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-coffee-500"></div>
       </div>
     )
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-1">
       {comments.length > 0 ? (
         comments.map((comment) => (
           <CommentItem key={comment.id} comment={comment} onCommentDeleted={handleCommentDeleted} />
         ))
       ) : (
-        <div className="text-center py-6">
-          <p className="text-gray-500 dark:text-gray-400">No comments yet. Be the first to comment!</p>
+        <div className="text-center py-4">
+          <p className="text-coffee-500 dark:text-coffee-400">No comments yet. Be the first to comment!</p>
         </div>
       )}
     </div>
