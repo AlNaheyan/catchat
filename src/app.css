@@ -5,6 +5,11 @@
 
 body {
   font-family: var(--font-sans);
+  overscroll-behavior: none;
 
+}
+
+html {
+  overscroll-behavior: none;
 }
 

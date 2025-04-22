@@ -44,7 +44,7 @@ function App() {
               <AuthGuard>
                 <>
                   <Header onThemeToggle={toggleDarkMode} isDarkMode={isDarkMode} />
-                  <main className="pt-6 pb-12">
+                  <main className="pt-6 pb-12 cat-cursor">
                     <HomePage />
                   </main>
                 </>
@@ -58,7 +58,7 @@ function App() {
               <AuthGuard>
                 <>
                   <Header onThemeToggle={toggleDarkMode} isDarkMode={isDarkMode} />
-                  <main className="pt-6 pb-12">
+                  <main className="pt-6 pb-12 cat-cursor">
                     <CreatePostPage />
                   </main>
                 </>
@@ -72,7 +72,7 @@ function App() {
               <AuthGuard>
                 <>
                   <Header onThemeToggle={toggleDarkMode} isDarkMode={isDarkMode} />
-                  <main className="pt-6 pb-12">
+                  <main className="pt-6 pb-12 cat-cursor">
                     <PostPage />
                   </main>
                 </>
@@ -86,7 +86,7 @@ function App() {
               <AuthGuard>
                 <>
                   <Header onThemeToggle={toggleDarkMode} isDarkMode={isDarkMode} />
-                  <main className="pt-6 pb-12">
+                  <main className="pt-6 pb-12 cat-cursor">
                     <EditPostPage />
                   </main>
                 </>

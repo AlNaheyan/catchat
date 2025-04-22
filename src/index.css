@@ -66,5 +66,14 @@
   --ring: 28 40% 49%;
 }
 
-
-/* Custom cat paw cursor */
+html, body {
+    background-color: var(--coffee-50);
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Dark mode background */
+html.dark, body.dark {
+    background-color: var(--coffee-950);
+  }
