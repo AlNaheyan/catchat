@@ -1,12 +1,27 @@
-# React + Vite
+# 🐱 CatChat
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CatChat is a lightweight social‑media‑style web app for cat lovers. Sign up or log in, share your favorite things about cats, leave comments, and give posts a “purr‑fect” like!
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- **Authentication**  
+  – Sign up / sign in with secure email/password flow with Supabase Auth
+  – Protected routes for posting, commenting, and liking using React Router Dom
+- **Posts**  
+  – Create, read, update, and delete your “Favorite Cat Fact” posts  
+  – View all users’ posts in reverse‑chronological order  
+- **Interactions**  
+  – Comment on any post  
+  – Like / unlike posts  
+- **Responsive UI**  
+  – Mobile‑first design, works on phones, tablets, and desktop  
+  – Dark mode support  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠 Tech Stack
+
+- **Frontend:** React + Tailwind CSS  
+- **Backend & Auth:** Supabase (Auth, Realtime Database)
