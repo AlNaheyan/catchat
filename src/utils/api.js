@@ -57,40 +57,49 @@ export const getSession = async () => {
 // Posts API
 export const getPosts = async (sortBy = "created_at", direction = "desc", searchQuery = "") => {
   let query = supabase
-    .from("posts")
-    .select("*, profiles(username)")
-    .order(sortBy, { ascending: direction === "asc" })
+    .from("posts_with_profiles")
+    .select("*")  // Remove the profiles join for now
+    .order(sortBy, { ascending: direction === "asc" });
 
   if (searchQuery) {
-    query = query.ilike("title", `%${searchQuery}%`)
+    query = query.ilike("title", `%${searchQuery}%`);
   }
 
-  const { data, error } = await query
+  const { data, error } = await query;
 
   if (error) {
-    console.error("Error fetching posts:", error)
-    return []
+    console.error("Error fetching posts:", error);
+    return [];
   }
 
+  // Process the posts to add author names
+  
   return data.map((post) => ({
     ...post,
-    author_name: post.author_name || post.profiles?.username || "Anonymous Cat Lover",
-  }))
-}
+    author_name: post.username || post.author_name || "Anonymous Cat Lover",
+  }));
+};
 
 export const getPostById = async (id) => {
-  const { data, error } = await supabase.from("posts").select("*, profiles(username)").eq("id", id).single()
+  const { data, error } = await supabase
+    .from("posts_with_profiles")
+    .select("*")  // Remove the profiles join for now
+    .eq("id", id)
+    .single();
 
   if (error) {
-    console.error("Error fetching post:", error)
-    return null
+    console.error("Error fetching post:", error);
+    return null;
   }
+
+  // Get the author's profile separately if needed
+
 
   return {
     ...data,
-    author_name: data.author_name || data.profiles?.username || "Anonymous Cat Lover",
-  }
-}
+    author_name: data.username || data.author_name || "Anonymous Cat Lover",
+  };
+};
 
 export const createPost = async (postData) => {
   const user = await getCurrentUser()
@@ -172,21 +181,21 @@ export const upvotePost = async (id, currentUpvotes) => {
 // Comments API
 export const getCommentsByPostId = async (postId) => {
   const { data, error } = await supabase
-    .from("comments")
-    .select("*, profiles(username)")
+    .from("comments_with_profiles")  // Use the view instead
+    .select("*")
     .eq("post_id", postId)
-    .order("created_at", { ascending: false })
+    .order("created_at", { ascending: false });
 
   if (error) {
-    console.error("Error fetching comments:", error)
-    return []
+    console.error("Error fetching comments:", error);
+    return [];
   }
 
   return data.map((comment) => ({
     ...comment,
-    author_name: comment.author_name || comment.profiles?.username || "Anonymous Cat Lover",
-  }))
-}
+    author_name: comment.username || comment.author_name || "Anonymous Cat Lover",
+  }));
+};
 
 export const createComment = async (commentData) => {
   const user = await getCurrentUser()
