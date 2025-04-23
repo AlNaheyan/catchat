@@ -41,7 +41,7 @@ export const Header = ({ onThemeToggle, isDarkMode }) => {
           <div className="flex items-center gap-4">
             <button
               onClick={onThemeToggle}
-              className="p-2 text-[#8c7158] dark:text-[#d4b996] hover:text-[#6f4e37] dark:hover:text-[#e6d7c3] rounded-full hover:bg-[#e6d7c3] dark:hover:bg-[#4d3f33]"
+              className="p-2 text-[#8c7158] dark:text-[#d4b996] hover:text-[#6f4e37] dark:hover:text-[#e6d7c3] rounded-full hover:bg-[#e6d7c3] dark:hover:bg-[#4d3f33] cursor-pointer"
               aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -53,9 +53,9 @@ export const Header = ({ onThemeToggle, isDarkMode }) => {
                   <div className="relative">
                     <button
                       onClick={() => setIsMenuOpen(!isMenuOpen)}
-                      className="flex items-center gap-2 text-sm font-medium text-[#6f4e37] dark:text-[#d4b996] hover:text-[#a67c52] dark:hover:text-[#e6d7c3]"
+                      className="flex items-center gap-2 text-sm font-medium text-[#6f4e37] dark:text-[#d4b996] hover:text-[#a67c52] dark:hover:text-[#e6d7c3] cursor-pointer"
                     >
-                      <span>{user.email}</span>
+                      <span>{user.username ?? user.email}</span>
                       {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
                     </button>
 
@@ -67,7 +67,7 @@ export const Header = ({ onThemeToggle, isDarkMode }) => {
                           onClick={() => setIsMenuOpen(false)}
                         >
                           <User className="w-4 h-4" />
-                          <span>Profile (WIP)</span>
+                          <span>Profile</span>
                         </Link>
                         <button
                           onClick={() => {

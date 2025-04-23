@@ -48,15 +48,25 @@ export const signOut = async () => {
 export const getCurrentUser = async () => {
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
-  // Ensure profile exists when getting current user
-  if (user) {
-    await ensureUserProfile(user.id)
-  }
+  if (!user) return null;
 
-  return user
-}
+  // ensure the row exists (keeps your trigger fallback)
+  await ensureUserProfile(user.id);
+
+  // pull the username from profiles
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("username")
+    .eq("id", user.id)
+    .single();           // returns { username: '...' } or null
+
+  return {
+    ...user,                         // id, email, aud, etc.
+    username: profile?.username,     // undefined until set
+  };
+};
 
 export const getSession = async () => {
   const {
