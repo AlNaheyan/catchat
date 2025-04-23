@@ -1,5 +1,5 @@
 # 🐱 CatChat
-
+### WEB102 Final Project
 CatChat is a lightweight social‑media‑style web app for cat lovers. Sign up or log in, share your favorite things about cats, leave comments, and give posts a “purr‑fect” like!
 
 ---
