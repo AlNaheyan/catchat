@@ -15,7 +15,7 @@ export const HomePage = () => {
           className="flex items-center gap-2 px-4 py-2 bg-[#a67c52] text-white rounded-lg hover:bg-[#8c6142] transition-colors"
         >
           <PlusCircle className="w-5 h-5" />
-          <span>Share Cat Photo</span>
+          <span>Post Cat Photo</span>
         </Link>
       </div>
 
