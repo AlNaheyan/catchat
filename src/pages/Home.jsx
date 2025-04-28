@@ -23,7 +23,7 @@ export const HomePage = () => {
         <h2 className="text-xl font-bold text-[#6f4e37] dark:text-[#d4b996] mb-2">Welcome to CatChat!</h2>
         <p className="text-[#8c7158] dark:text-[#b39f85]">
           Share your favorite cat photos, stories, and connect with fellow cat enthusiasts. From playful kittens to
-          majestic seniors, we love all cats here!
+          majestic seniors, we welcome all cats here!
         </p>
       </div>
 
